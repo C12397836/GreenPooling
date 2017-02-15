@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "85845406710",
+    "firebase_url": "https://greenpooling-879d0.firebaseio.com",
+    "project_id": "greenpooling-879d0",
+    "storage_bucket": "greenpooling-879d0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:85845406710:android:904d0fe54bdba6e3",
+        "android_client_info": {
+          "package_name": "com.example.paul.greenpooling11"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "85845406710-4nkhn2tuakbvlfodh3ion6658m5kd5kq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDuRKTyaOgdt8Ewgp6d3zfCBo5mN2ReiNc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "85845406710-4nkhn2tuakbvlfodh3ion6658m5kd5kq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">GreenPooling1.1</string>
+    <string name="facebook_app_id">192426534539683</string>
+    <string-array name="navigation_drawer_items_array">
+        <item>Profile</item>
+        <item>RTI</item>
+        <item>Plan Trip</item>
+        <item>Friends Regular Trips</item>
+        <item>Search All Trips</item>
+    </string-array>
+
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_edit_profile">EditProfile</string>
+
+</resources>
