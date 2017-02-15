@@ -166,12 +166,12 @@ public class SplashScreen extends Activity {
                                                     Intent i = new Intent(SplashScreen.this, EditProfile.class);
                                                     mDatabase.child("users").child(userId).child("fbId").setValue(uid);
 
-                                                    mDatabase.child("users").child(userId).child("name").setValue("");
+                                                    mDatabase.child("users").child(userId).child("name").setValue(name);
                                                     mDatabase.child("users").child(userId).child("age").setValue("");
-                                                    mDatabase.child("users").child(userId).child("gender").setValue("");
+                                                    mDatabase.child("users").child(userId).child("gender").setValue(gender);
                                                     mDatabase.child("users").child(userId).child("location").setValue("");
-                                                    mDatabase.child("users").child(userId).child("email").setValue("");
-                                                    mDatabase.child("users").child(userId).child("bio").setValue("");
+                                                    mDatabase.child("users").child(userId).child("email").setValue(email);
+                                                    mDatabase.child("users").child(userId).child("bio").setValue(bio);
                                                     mDatabase.child("users").child(userId).child("preferences").child("chatty").setValue("");
                                                     mDatabase.child("users").child(userId).child("preferences").child("smoking").setValue("");
                                                     mDatabase.child("users").child(userId).child("car").child("make").setValue("");
@@ -179,12 +179,12 @@ public class SplashScreen extends Activity {
                                                     mDatabase.child("users").child(userId).child("car").child("seats").setValue("");
 
 
-                                                    i.putExtra("name", name);
+                                                    /*i.putExtra("name", name);
                                                     i.putExtra("gender", gender);
                                                     i.putExtra("email", email);
                                                     i.putExtra("birthday", birthday);
                                                     i.putExtra("location", location);
-                                                    i.putExtra("bio", bio);
+                                                    i.putExtra("bio", bio);*/
                                                     startActivity(i);
                                                 }
                                             }

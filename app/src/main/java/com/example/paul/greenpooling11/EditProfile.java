@@ -68,7 +68,7 @@ public class EditProfile extends Activity {
         final RadioGroup genderGroup = (RadioGroup) findViewById(R.id.genderRadio);
         genderGroup.check(R.id.maleRadio);
 
-        Bundle extras = getIntent().getExtras();
+        //Bundle extras = getIntent().getExtras();
 
         new EditProfile.JsonTask().execute("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json", "getMakes");
         //new JsonTask().execute("https://api.edmunds.com/api/vehicle/v2/"+"nissan"+"?state="+"used"+"&year="+"1999"+"&view=basic&fmt=json&api_key=tv2b9bnddtksqg6pwxfz6875");
@@ -106,8 +106,12 @@ public class EditProfile extends Activity {
 
                 chattyPref.setSelection(getIndex(chattyPref, dataSnapshot.child("users").child(userId).child("preferences").child("chatty").getValue().toString()));
                 smokingPref.setSelection(getIndex(smokingPref, dataSnapshot.child("users").child(userId).child("preferences").child("smoking").getValue().toString()));
-                //carModelSpinner.setSelection(getIndex(carModelSpinner, dataSnapshot.child("users").child(userId).child("car").child("model").getValue().toString()));
-                //carMakeSpinner.setSelection(getIndex(carMakeSpinner, dataSnapshot.child("users").child(userId).child("car").child("make").getValue().toString()));
+                if(carModelSpinner!=null){
+                    carModelSpinner.setSelection(getIndex(carModelSpinner, dataSnapshot.child("users").child(userId).child("car").child("model").getValue().toString()));
+                }
+                if(carMakeSpinner!=null){
+                    carMakeSpinner.setSelection(getIndex(carMakeSpinner, dataSnapshot.child("users").child(userId).child("car").child("make").getValue().toString()));
+                }
                 seatSpinner.setSelection(getIndex(seatSpinner, dataSnapshot.child("users").child(userId).child("car").child("seats").getValue().toString()));
 
                 RadioButton maleRadio =(RadioButton)findViewById(R.id.maleRadio);
