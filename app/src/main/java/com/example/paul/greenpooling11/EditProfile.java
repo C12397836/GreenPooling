@@ -106,12 +106,12 @@ public class EditProfile extends Activity {
 
                 chattyPref.setSelection(getIndex(chattyPref, dataSnapshot.child("users").child(userId).child("preferences").child("chatty").getValue().toString()));
                 smokingPref.setSelection(getIndex(smokingPref, dataSnapshot.child("users").child(userId).child("preferences").child("smoking").getValue().toString()));
+
+
                 if(carModelSpinner!=null){
                     carModelSpinner.setSelection(getIndex(carModelSpinner, dataSnapshot.child("users").child(userId).child("car").child("model").getValue().toString()));
                 }
-                if(carMakeSpinner!=null){
-                    carMakeSpinner.setSelection(getIndex(carMakeSpinner, dataSnapshot.child("users").child(userId).child("car").child("make").getValue().toString()));
-                }
+
                 seatSpinner.setSelection(getIndex(seatSpinner, dataSnapshot.child("users").child(userId).child("car").child("seats").getValue().toString()));
 
                 RadioButton maleRadio =(RadioButton)findViewById(R.id.maleRadio);
@@ -358,6 +358,26 @@ public class EditProfile extends Activity {
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditProfile.this, android.R.layout.simple_spinner_item, carModels);
                 adapter.setDropDownViewResource(R.layout.custom_spinner_item);
                 carModelSpinner.setAdapter(adapter);
+
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("make").getValue().toString().equals("")) {
+                            Log.d("CARMAKECHECK", "" + getIndex(carMakeSpinner, "Audi"));
+                            carMakeSpinner.setSelection(getIndex(carMakeSpinner, dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("make").getValue().toString()));
+                        }
+
+                        if(!dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("model").getValue().toString().equals("")) {
+                            carModelSpinner.setSelection(getIndex(carModelSpinner, dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("model").getValue().toString()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
             //Log.d("JSONResult",result);
         }

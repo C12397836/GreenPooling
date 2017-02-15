@@ -133,36 +133,38 @@ public class SplashScreen extends Activity {
                     // User is signed in
                     Log.d("TAG", "onAuthStateChanged:signed_in:" + user.getUid());
 
-                    GraphRequest request = GraphRequest.newMeRequest(
-                            getCurrentAccessToken(),
-                            new GraphRequest.GraphJSONObjectCallback() {
-                                @Override
-                                public void onCompleted(JSONObject object, GraphResponse response) {
-                                    // Application code
-                                    try {
-                                        //final String userId = getCurrentAccessToken().getUserId();
-                                        final String uid = object.getString("id");
-                                        final String name = object.getString("name");
-                                        final String gender = object.getString("gender");
-                                        final String location = "";//object.getJSONObject("location").getString("name");;
-                                        final String email = object.getString("email");
-                                        final String birthday = object.getString("birthday");
-                                        final String bio = "";//object.getString("about");
-                                        final Boolean b;
+                    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+                    mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                        final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                                        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                            String userId = mAuth.getCurrentUser().getUid();
+                            //Log.d("USERDATA",""+dataSnapshot.getValue().toString());
+                            if(dataSnapshot.child("users").hasChild(userId)) {
+                                //normal login
+                                Intent i = new Intent(SplashScreen.this, LoggedInActivity.class);
+                                startActivity(i);
+                            }else{
+                                //first time login
+
+                                GraphRequest request = GraphRequest.newMeRequest(
+                                        getCurrentAccessToken(),
+                                        new GraphRequest.GraphJSONObjectCallback() {
                                             @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                            public void onCompleted(JSONObject object, GraphResponse response) {
+                                                // Application code
+                                                try {
+                                                    //final String userId = getCurrentAccessToken().getUserId();
+                                                    String userId = mAuth.getCurrentUser().getUid();
+                                                    final String uid = object.getString("id");
+                                                    final String name = object.getString("name");
+                                                    final String gender = object.getString("gender");
+                                                    final String location = "";//object.getJSONObject("location").getString("name");;
+                                                    final String email = object.getString("email");
+                                                    final String birthday = object.getString("birthday");
+                                                    final String bio = "";//object.getString("about");
+                                                    final Boolean b;
 
-                                                String userId = mAuth.getCurrentUser().getUid();
-                                                //Log.d("USERDATA",""+dataSnapshot.getValue().toString());
-                                                if(dataSnapshot.child("users").hasChild(userId)) {
-                                                    //normal login
-                                                    Intent i = new Intent(SplashScreen.this, LoggedInActivity.class);
-                                                    startActivity(i);
-                                                }else{
-                                                    //first time login
                                                     Intent i = new Intent(SplashScreen.this, EditProfile.class);
                                                     mDatabase.child("users").child(userId).child("fbId").setValue(uid);
 
@@ -178,7 +180,6 @@ public class SplashScreen extends Activity {
                                                     mDatabase.child("users").child(userId).child("car").child("model").setValue("");
                                                     mDatabase.child("users").child(userId).child("car").child("seats").setValue("");
 
-
                                                     /*i.putExtra("name", name);
                                                     i.putExtra("gender", gender);
                                                     i.putExtra("email", email);
@@ -186,25 +187,27 @@ public class SplashScreen extends Activity {
                                                     i.putExtra("location", location);
                                                     i.putExtra("bio", bio);*/
                                                     startActivity(i);
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
                                                 }
                                             }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-
-                                            }
                                         });
+                                Bundle parameters = new Bundle();
+                                parameters.putString("fields", "id,name,email,gender,birthday");
+                                request.setParameters(parameters);
+                                request.executeAsync();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
                                         //addListenerForSingleValueEvent()
 
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                    Bundle parameters = new Bundle();
-                    parameters.putString("fields", "id,name,email,gender,birthday");
-                    request.setParameters(parameters);
-                    request.executeAsync();
+
 
                     /*for (UserInfo profile : user.getProviderData()) {
                         String profileDisplayName = profile.getDisplayName();
