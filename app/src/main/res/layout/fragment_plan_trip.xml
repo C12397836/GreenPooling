@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/label"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
@@ -17,15 +16,32 @@
         android:text="Plan Trip"
         android:textStyle="bold"/>
 
-    <TextView
-        android:layout_below="@id/label"
-        android:layout_centerInParent="true"
-        android:layout_width="fill_parent"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/seperator"
+        android:layout_below="@+id/label"
+        />
+
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="12dp"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:text="Edit .xml to change the appearance"
-        android:id="@+id/textView2" />
+        android:id="@+id/driverButton"
+        android:text="Driver"
+        android:layout_below="@id/seperator"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/seperator1"
+        android:layout_below="@+id/driverButton"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passengerButton"
+        android:text="Passenger"
+        android:layout_below="@id/seperator1"/>
 
 </RelativeLayout>

@@ -9,7 +9,7 @@
     <ScrollView
         android:id="@+id/scroll"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="match_parent"
         android:fillViewport="true" >
 
         <RelativeLayout
@@ -59,7 +59,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_toRightOf="@+id/userImage"
                 android:layout_toEndOf="@+id/userImage"
-                android:layout_marginTop="36dp" />
+                android:layout_marginTop="36dp"
+                android:nextFocusDown="@+id/ageEdit"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -124,7 +125,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:textSize="14sp"
-                android:hint="Say something about youself to show to other users..."/>
+                android:hint="Say something about youself to show to other users..."
+                />
 
             <View
                 android:layout_width="match_parent"
@@ -160,7 +162,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/smokingTitle"
                 android:text="Smoking"
-                android:layout_below="@id/chattyPref"/>
+                android:layout_below="@id/chattyPref"
+                android:nextFocusDown="@+id/smokingPref"/>
 
             <Spinner
                 android:layout_width="match_parent"
@@ -168,7 +171,8 @@
                 android:layout_below="@+id/smokingTitle"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:id="@+id/smokingPref"/>
+                android:id="@+id/smokingPref"
+                android:nextFocusDown="@+id/carMake"/>
 
             <View
                 android:layout_width="match_parent"
@@ -192,7 +196,8 @@
                 android:hint="0"
                 android:id="@+id/ageEdit"
                 android:layout_below="@+id/name"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:nextFocusDown="@+id/locationEdit"/>
 
             <RadioGroup
                 android:layout_width="wrap_content"
@@ -206,7 +211,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:hint="Male"
-                    android:id="@+id/maleRadio"/>
+                    android:id="@+id/maleRadio" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
@@ -225,7 +230,8 @@
                 android:textSize="14sp"
                 android:layout_below="@+id/genderRadio"
                 android:layout_alignLeft="@+id/genderRadio"
-                android:layout_alignStart="@+id/genderRadio" />
+                android:layout_alignStart="@+id/genderRadio"
+                android:nextFocusDown="@+id/emailEdit"/>
 
             <EditText
                 android:layout_width="wrap_content"
@@ -236,7 +242,8 @@
                 android:textSize="14sp"
                 android:layout_below="@+id/locationEdit"
                 android:layout_alignLeft="@+id/locationEdit"
-                android:layout_alignStart="@+id/locationEdit" />
+                android:layout_alignStart="@+id/locationEdit"
+                android:nextFocusDown="@+id/bio"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -250,7 +257,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/carMakeText"
-                android:id="@+id/carMake"/>
+                android:id="@+id/carMake"
+                android:nextFocusDown="@+id/carModel"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -264,7 +272,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/carModelText"
-                android:id="@+id/carModel"/>
+                android:id="@+id/carModel"
+                android:nextFocusDown="@+id/carSeat"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -278,7 +287,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/carSeatText"
-                android:id="@+id/carSeat"/>
+                android:id="@+id/carSeat"
+                android:nextFocusDown="@+id/submit"/>
 
             <Button
                 android:layout_width="wrap_content"

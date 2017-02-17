@@ -49,6 +49,7 @@ public class EditProfile extends Activity {
     TextView errorText;
     Spinner carMakeSpinner;
     Spinner carModelSpinner;
+    String dbCarMake,dbCarModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,10 +108,8 @@ public class EditProfile extends Activity {
                 chattyPref.setSelection(getIndex(chattyPref, dataSnapshot.child("users").child(userId).child("preferences").child("chatty").getValue().toString()));
                 smokingPref.setSelection(getIndex(smokingPref, dataSnapshot.child("users").child(userId).child("preferences").child("smoking").getValue().toString()));
 
-
-                if(carModelSpinner!=null){
-                    carModelSpinner.setSelection(getIndex(carModelSpinner, dataSnapshot.child("users").child(userId).child("car").child("model").getValue().toString()));
-                }
+                dbCarMake=dataSnapshot.child("users").child(userId).child("car").child("make").getValue().toString();
+                dbCarModel=dataSnapshot.child("users").child(userId).child("car").child("model").getValue().toString();
 
                 seatSpinner.setSelection(getIndex(seatSpinner, dataSnapshot.child("users").child(userId).child("car").child("seats").getValue().toString()));
 
@@ -330,6 +329,30 @@ public class EditProfile extends Activity {
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditProfile.this, android.R.layout.simple_spinner_item, carMakes);
                 adapter.setDropDownViewResource(R.layout.custom_spinner_item);
                 carMakeSpinner.setAdapter(adapter);
+                if(dbCarMake!=null) {
+                    carMakeSpinner.setSelection(getIndex(carMakeSpinner, dbCarMake));
+                    dbCarMake=null;
+                }
+
+                /*mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(!dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("make").getValue().toString().equals("")) {
+                            Log.d("CARMAKECHECK", "" + getIndex(carMakeSpinner, "Audi"));
+                            carMakeSpinner.setSelection(getIndex(carMakeSpinner, dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("make").getValue().toString()));
+                        }
+
+                        if(!dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("model").getValue().toString().equals("")) {
+                            carModelSpinner.setSelection(getIndex(carModelSpinner, dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("model").getValue().toString()));
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });*/
 
                 carMakeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -358,26 +381,10 @@ public class EditProfile extends Activity {
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(EditProfile.this, android.R.layout.simple_spinner_item, carModels);
                 adapter.setDropDownViewResource(R.layout.custom_spinner_item);
                 carModelSpinner.setAdapter(adapter);
-
-                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if(!dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("make").getValue().toString().equals("")) {
-                            Log.d("CARMAKECHECK", "" + getIndex(carMakeSpinner, "Audi"));
-                            carMakeSpinner.setSelection(getIndex(carMakeSpinner, dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("make").getValue().toString()));
-                        }
-
-                        if(!dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("model").getValue().toString().equals("")) {
-                            carModelSpinner.setSelection(getIndex(carModelSpinner, dataSnapshot.child("users").child(mAuth.getCurrentUser().getUid()).child("car").child("model").getValue().toString()));
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                if(dbCarModel!=null) {
+                    carModelSpinner.setSelection(getIndex(carModelSpinner, dbCarModel));
+                    dbCarModel=null;
+                }
             }
             //Log.d("JSONResult",result);
         }
