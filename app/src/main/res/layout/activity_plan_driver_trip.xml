@@ -57,7 +57,7 @@
                 android:layout_below="@+id/destAutocomplete"
                 />
 
-            <CheckedTextView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/roundTripText"
@@ -85,6 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="Pick Return Date"
                 android:id="@+id/endDate"
+                android:visibility="invisible"
                 android:onClick="showDatePickerDialog"
                 android:layout_below="@+id/seperator3"/>
 
@@ -109,6 +110,7 @@
                 android:layout_height="wrap_content"
                 android:text="Time"
                 android:id="@+id/endTime"
+                android:visibility="invisible"
                 android:onClick="showTimePickerDialog"
                 android:layout_below="@+id/seperator3"
                 android:layout_toRightOf="@+id/endDate" />
@@ -172,7 +174,16 @@
                 android:text="Submit"
                 android:layout_below="@+id/seperator6"/>
 
-            </RelativeLayout>
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/roundTrip"
+                android:layout_below="@+id/seperator2"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:checked="false" />
+
+        </RelativeLayout>
     </ScrollView>
 
 </RelativeLayout>
