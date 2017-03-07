@@ -14,10 +14,6 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
-/**
- * Created by Paul on 01/12/2016.
- */
-
 public class PlaceAPI {
 
     private static final String TAG = PlaceAPI.class.getSimpleName();
@@ -37,7 +33,7 @@ public class PlaceAPI {
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + API_KEY);
-            sb.append("&types=geocode");
+            sb.append("&types=(regions)");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             Log.e("", sb.toString());

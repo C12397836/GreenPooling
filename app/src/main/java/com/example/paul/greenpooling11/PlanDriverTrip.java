@@ -3,6 +3,7 @@ package com.example.paul.greenpooling11;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.app.Fragment;
@@ -35,6 +36,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
+import java.util.UUID;
 
 public class PlanDriverTrip extends FragmentActivity{
 
@@ -45,6 +47,7 @@ public class PlanDriverTrip extends FragmentActivity{
     static int datePickerInput;
     static int timePickerInput;
     TextView errorText;
+    String tripId;
 
     public static class DatePickerFragment extends DialogFragment
             implements DatePickerDialog.OnDateSetListener {
@@ -204,16 +207,23 @@ public class PlanDriverTrip extends FragmentActivity{
                     errorText.setTextColor(Color.RED);
                     errorText.setText("Detour is required!");
                 }else{
-                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("trips").child("driver").child("origin").setValue(originAutocompleteView.getText().toString());
-                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("trips").child("driver").child("destination").setValue(destAutocompleteView.getText().toString());
-                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("trips").child("driver").child("date").setValue(startDate.getText().toString());
-                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("trips").child("driver").child("time").setValue(startTime.getText().toString());
+
+                    tripId= String.valueOf(UUID.randomUUID());
+                    mDatabase.child("trips").child(tripId).child("driver").child("userId").setValue(mAuth.getCurrentUser().getUid().toString());
+                    mDatabase.child("trips").child(tripId).child("driver").child("origin").setValue(originAutocompleteView.getText().toString());
+                    mDatabase.child("trips").child(tripId).child("driver").child("destination").setValue(destAutocompleteView.getText().toString());
+                    mDatabase.child("trips").child(tripId).child("driver").child("date").setValue(startDate.getText().toString());
+                    mDatabase.child("trips").child(tripId).child("driver").child("time").setValue(startTime.getText().toString());
                     if(roundTrip.isChecked()){
-                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("trips").child("driver").child("returnDate").setValue(endDate.getText().toString());
-                        mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("trips").child("driver").child("returnTime").setValue(endTime.getText().toString());
+                        mDatabase.child("trips").child(tripId).child("driver").child("returnDate").setValue(endDate.getText().toString());
+                        mDatabase.child("trips").child(tripId).child("driver").child("returnTime").setValue(endTime.getText().toString());
                     }
-                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("trips").child("driver").child("avaiableSeats").setValue(seatNumber.getValue());
-                    mDatabase.child("users").child(mAuth.getCurrentUser().getUid()).child("trips").child("driver").child("detour").setValue(detour.getSelectedItem().toString());
+                    mDatabase.child("trips").child(tripId).child("driver").child("avaiableSeats").setValue("" +seatNumber.getValue());
+                    mDatabase.child("trips").child(tripId).child("driver").child("detour").setValue(detour.getSelectedItem().toString());
+
+                    Toast.makeText(PlanDriverTrip.this, "Creating Trip...", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(PlanDriverTrip.this, LoggedInActivity.class);
+                    startActivity(i);
                 }
             }
         });

@@ -1,0 +1,73 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="10dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+
+        <TextView
+            android:id="@+id/origin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testOrigin"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/destination"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="testDestination"
+            android:layout_below="@+id/origin"
+            android:textSize="20sp"
+            />
+
+        <TextView
+            android:id="@+id/leaving"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Leaving: 10/11/12 12:00"
+            android:layout_alignParentRight="true"
+            android:textSize="10sp"
+            />
+
+        <TextView
+            android:id="@+id/returning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Returning: 10/11/12 12:00"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/leaving"
+            android:textSize="10sp"
+            />
+
+        <TextView
+            android:id="@+id/driverName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Paul Good"
+            android:layout_below="@id/destination"
+            android:paddingTop="5sp"
+            android:paddingBottom="5sp"
+            />
+
+        <TextView
+            android:id="@+id/tripId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>

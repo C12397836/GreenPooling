@@ -179,6 +179,8 @@ public class SplashScreen extends Activity {
                                                     mDatabase.child("users").child(userId).child("car").child("make").setValue("");
                                                     mDatabase.child("users").child(userId).child("car").child("model").setValue("");
                                                     mDatabase.child("users").child(userId).child("car").child("seats").setValue("");
+                                                    mDatabase.child("users").child(userId).child("rtiLocation").child("lat").setValue("0");
+                                                    mDatabase.child("users").child(userId).child("rtiLocation").child("lng").setValue("0");
 
                                                     /*i.putExtra("name", name);
                                                     i.putExtra("gender", gender);

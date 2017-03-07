@@ -29,16 +29,23 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" >
 
-            <TextView
-                android:id="@+id/welcome"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="100dp"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:textSize="45dp"
-                android:text="Welcome!"
-                android:textStyle="bold"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/welcome"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="100dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:visibility="invisible"
+                    android:textSize="45dp"
+                    android:text="Welcome!"
+                    android:textStyle="bold"/>
+
+            </RelativeLayout>
 
         </FrameLayout>
 

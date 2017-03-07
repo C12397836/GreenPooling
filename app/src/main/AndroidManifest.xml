@@ -56,7 +56,13 @@
             android:label="@string/title_activity_plan_driver_trip" />
         <activity
             android:name=".PlanPassengerTrip"
-            android:label="@string/title_activity_plan_passenger_trip"></activity>
+            android:label="@string/title_activity_plan_passenger_trip" />
+
+        <service
+            android:name=".LocationUpdatesService"
+            android:enabled="true"
+            android:exported="true" />
+
     </application>
 
 </manifest>
