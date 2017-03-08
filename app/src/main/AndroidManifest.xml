@@ -58,6 +58,14 @@
             android:name=".PlanPassengerTrip"
             android:label="@string/title_activity_plan_passenger_trip" />
 
+        <activity
+            android:name=".TripInfoPage"
+            android:label="TripInfoPage"/>
+
+        <activity
+            android:name=".RouteMatch"
+            android:label="RouteMatch" />
+
         <service
             android:name=".LocationUpdatesService"
             android:enabled="true"

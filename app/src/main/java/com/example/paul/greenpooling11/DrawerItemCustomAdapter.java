@@ -1,9 +1,5 @@
 package com.example.paul.greenpooling11;
 
-/**
- * Created by Paul on 08/11/2016.
- */
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;

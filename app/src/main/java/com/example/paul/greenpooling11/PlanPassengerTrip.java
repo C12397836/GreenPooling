@@ -65,7 +65,9 @@ public class PlanPassengerTrip extends Activity {
                         String tripId = tripIdTx.getText().toString();
                         //Toast.makeText(PlanPassengerTrip.this, ""+tripId, Toast.LENGTH_SHORT).show();
 
-                        //Intent i = new Intent(this, Trip);
+                        Intent i = new Intent(PlanPassengerTrip.this, TripInfoPage.class);
+                        i.putExtra("tripId", tripId);
+                        startActivity(i);
                     }
                 })
         );

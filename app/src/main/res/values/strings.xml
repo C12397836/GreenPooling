@@ -13,5 +13,6 @@
     <string name="title_activity_edit_profile">EditProfile</string>
     <string name="title_activity_plan_driver_trip">PlanDriverTrip</string>
     <string name="title_activity_plan_passenger_trip">PlanPassengerTrip</string>
+    <string name="title_activity_route_match">RouteMatch</string>
 
 </resources>
