@@ -2,7 +2,10 @@ package com.example.paul.greenpooling11;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -38,6 +42,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,8 +82,10 @@ public class ProfileFragment extends Fragment {
         final String userId = mAuth.getCurrentUser().getUid().toString();
 
         Log.d("User","user:"+userId);
-        ProfilePictureView userImage = (ProfilePictureView) rootView.findViewById(R.id.userImage);
-        userImage.setProfileId(userId);
+        //ProfilePictureView userImage = (ProfilePictureView) rootView.findViewById(R.id.userImage);
+        //userImage.setProfileId(userId);
+
+        final ImageView userImage = (ImageView) rootView.findViewById(R.id.userImage);
 
         final TextView nameView = (TextView) rootView.findViewById(R.id.name);
         final TextView ageView = (TextView) rootView.findViewById(R.id.ageEdit);
@@ -100,6 +107,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
+                Uri imageUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+                Picasso.with(getActivity())
+                        .load(imageUri)
+                        .into(userImage);
                 nameView.setText(dataSnapshot.child("users").child(userId).child("name").getValue().toString());
                 ageView.setText(dataSnapshot.child("users").child(userId).child("age").getValue().toString());
                 locationView.setText(dataSnapshot.child("users").child(userId).child("location").getValue().toString());

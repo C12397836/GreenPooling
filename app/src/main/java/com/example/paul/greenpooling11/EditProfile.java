@@ -3,6 +3,7 @@ package com.example.paul.greenpooling11;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -25,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -69,8 +72,6 @@ public class EditProfile extends Activity {
         final RadioGroup genderGroup = (RadioGroup) findViewById(R.id.genderRadio);
         genderGroup.check(R.id.maleRadio);
 
-        //Bundle extras = getIntent().getExtras();
-
         new EditProfile.JsonTask().execute("https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/car?format=json", "getMakes");
         //new JsonTask().execute("https://api.edmunds.com/api/vehicle/v2/"+"nissan"+"?state="+"used"+"&year="+"1999"+"&view=basic&fmt=json&api_key=tv2b9bnddtksqg6pwxfz6875");
         final Spinner chattyPref = (Spinner) findViewById(R.id.chattyPref);
@@ -94,9 +95,11 @@ public class EditProfile extends Activity {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
-                ProfilePictureView userImage = (ProfilePictureView) findViewById(R.id.userImage);
-                userImage.setProfileId(dataSnapshot.child("users").child(userId).child("fbId").getValue().toString());
+                ImageView userImage = (ImageView) findViewById(R.id.userImage);
+                Uri imageUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+                Picasso.with(EditProfile.this)
+                        .load(imageUri)
+                        .into(userImage);
                 nameView.setText(dataSnapshot.child("users").child(userId).child("name").getValue().toString());
                 ageView.setText(dataSnapshot.child("users").child(userId).child("age").getValue().toString());
                 locationView.setText(dataSnapshot.child("users").child(userId).child("location").getValue().toString());

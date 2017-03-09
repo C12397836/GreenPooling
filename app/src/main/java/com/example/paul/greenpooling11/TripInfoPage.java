@@ -2,18 +2,22 @@ package com.example.paul.greenpooling11;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.facebook.login.widget.ProfilePictureView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 public class TripInfoPage extends Activity {
 
@@ -45,9 +49,14 @@ public class TripInfoPage extends Activity {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                ProfilePictureView userImage = (ProfilePictureView) findViewById(R.id.userImage);
+                //ProfilePictureView userImage = (ProfilePictureView) findViewById(R.id.userImage);
+                ImageView userImage = (ImageView) findViewById(R.id.userImage);
                 String userId = dataSnapshot.child("trips").child(tripId).child("driver").child("userId").getValue().toString();
-                userImage.setProfileId(dataSnapshot.child("users").child(userId).child("fbId").getValue().toString());
+                //Uri imageUri = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl();
+                String imageUri= dataSnapshot.child("users").child(userId).child("userImage").getValue().toString();
+                Picasso.with(TripInfoPage.this)
+                        .load(imageUri)
+                        .into(userImage);
                 userName.setText(dataSnapshot.child("users").child(userId).child("name").getValue().toString());
 
                 String date = dataSnapshot.child("trips").child(tripId).child("driver").child("date").getValue().toString();
