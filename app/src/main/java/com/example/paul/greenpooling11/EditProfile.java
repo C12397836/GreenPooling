@@ -1,12 +1,14 @@
 package com.example.paul.greenpooling11;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,7 +46,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-public class EditProfile extends Activity {
+public class EditProfile extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -68,7 +70,7 @@ public class EditProfile extends Activity {
         final EditText locationView = (EditText) findViewById(R.id.locationEdit);
         final EditText emailView = (EditText) findViewById(R.id.emailEdit);
         final EditText bioView = (EditText) findViewById(R.id.bio);
-        Button submit = (Button) findViewById(R.id.submit);
+        FloatingActionButton submit = (FloatingActionButton) findViewById(R.id.submit);
         final RadioGroup genderGroup = (RadioGroup) findViewById(R.id.genderRadio);
         genderGroup.check(R.id.maleRadio);
 

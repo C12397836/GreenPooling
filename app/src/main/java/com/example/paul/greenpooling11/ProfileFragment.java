@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -96,12 +97,12 @@ public class ProfileFragment extends Fragment {
 
         final TextView chattyPref = (TextView) rootView.findViewById(R.id.chattyPref);
         final TextView smokingPref = (TextView) rootView.findViewById(R.id.smokingPref);
-        final TextView carMake = (TextView) rootView.findViewById(R.id.carMakeText);
-        final TextView carModel = (TextView) rootView.findViewById(R.id.carModelText);
-        final TextView seats = (TextView) rootView.findViewById(R.id.carSeatText);
+        final TextView carMake = (TextView) rootView.findViewById(R.id.carMake);
+        final TextView carModel = (TextView) rootView.findViewById(R.id.carModel);
+        final TextView seats = (TextView) rootView.findViewById(R.id.carSeat);
 
         Button signout = (Button) rootView.findViewById(R.id.signout);
-        Button edit = (Button) rootView.findViewById(R.id.edit);
+        FloatingActionButton edit = (FloatingActionButton) rootView.findViewById(R.id.edit);
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -113,9 +114,10 @@ public class ProfileFragment extends Fragment {
                         .into(userImage);
                 nameView.setText(dataSnapshot.child("users").child(userId).child("name").getValue().toString());
                 ageView.setText(dataSnapshot.child("users").child(userId).child("age").getValue().toString());
+                genderView.setText(dataSnapshot.child("users").child(userId).child("gender").getValue().toString());
                 locationView.setText(dataSnapshot.child("users").child(userId).child("location").getValue().toString());
                 emailView.setText(dataSnapshot.child("users").child(userId).child("email").getValue().toString());
-                bioView.setText(dataSnapshot.child("users").child(userId).child("bio").getValue().toString());
+                bioView.setText("&quot;quote"+dataSnapshot.child("users").child(userId).child("bio").getValue().toString()+"1&quot;");
                 chattyPref.setText(dataSnapshot.child("users").child(userId).child("preferences").child("chatty").getValue().toString());
                 smokingPref.setText(dataSnapshot.child("users").child(userId).child("preferences").child("smoking").getValue().toString());
                 carMake.setText(dataSnapshot.child("users").child(userId).child("car").child("make").getValue().toString());

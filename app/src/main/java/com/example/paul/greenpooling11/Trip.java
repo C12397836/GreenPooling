@@ -7,7 +7,7 @@ import android.widget.TextView;
 public class Trip {
 
     //protected String origin, destination;
-    protected String tripId, userId, userName,origin, destination, date, time, avaiableSeats,detour, returnDate, returnTime;
+    protected String tripId, userId, userName,origin, destination, date, time, availableSeats,detour, returnDate, returnTime;
 
     public Trip(){
     }
@@ -43,7 +43,7 @@ public class Trip {
         this.destination=destination;
     }
 
-    public Trip(String tripId, String userId, String userName, String origin, String destination, String date, String time, String avaiableSeats, String detour, String returnDate, String returnTime){
+    public Trip(String tripId, String userId, String userName, String origin, String destination, String date, String time, String availableSeats, String detour, String returnDate, String returnTime){
         super();
         this.tripId = tripId;
         this.userId = userId;
@@ -52,7 +52,7 @@ public class Trip {
         this.destination=destination;
         this.date=date;
         this.time=time;
-        this.avaiableSeats=avaiableSeats;
+        this.availableSeats=availableSeats;
         this.detour=detour;
         this.returnDate=returnDate;
         this.returnTime=returnTime;
@@ -114,12 +114,12 @@ public class Trip {
         this.time = time;
     }
 
-    public String getAvaiableSeats() {
-        return avaiableSeats;
+    public String getAvailableSeats() {
+        return availableSeats;
     }
 
-    public void setAvaiableSeats(String avaiableSeats) {
-        this.avaiableSeats = avaiableSeats;
+    public void setAvailableSeats(String availableSeats) {
+        this.availableSeats = availableSeats;
     }
 
     public String getDetour() {

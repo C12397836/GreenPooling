@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +35,7 @@ public class PlanPassengerTrip extends Activity {
 
         final List<Trip> data = new ArrayList<>();
 
+        final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("trips");
 
@@ -42,9 +44,12 @@ public class PlanPassengerTrip extends Activity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Trip trip = snapshot.child("driver").getValue(Trip.class);
-                    Log.d("jjjjj", "Key: "+snapshot.getKey());
                     trip.setTripId(snapshot.getKey().toString());
-                    data.add(trip);
+
+                    if(!trip.userId.equals(mAuth.getCurrentUser().getUid()) && Integer.parseInt(snapshot.child("driver").child("availableSeats").getValue().toString())>0){
+                        data.add(trip);
+                    }
+
                     TripAdapter adapter = new TripAdapter(data, getApplication());
                     recyclerView.setAdapter(adapter);
                     recyclerView.setLayoutManager(new LinearLayoutManager(PlanPassengerTrip.this));

@@ -148,46 +148,15 @@ public class SplashScreen extends AppCompatActivity implements GoogleApiClient.O
                             String imageUri = user.getPhotoUrl().toString();
                             mDatabase.child("users").child(userId).child("userImage").setValue(imageUri);
 
+                            Intent intent = new Intent(SplashScreen.this, RegistrationIntentService.class);
+                            startService(intent);
+
                             if(dataSnapshot.child("users").hasChild(userId)) {
                                 //normal login
                                 Intent i = new Intent(SplashScreen.this, LoggedInActivity.class);
                                 startActivity(i);
                             }else{
                                 //first time login
-                                /*if(mAuth.getCurrentUser().getProviderId().equals(FacebookAuthProvider.PROVIDER_ID)){
-                                    //FACEBOOK LOGIN
-                                    GraphRequest request = GraphRequest.newMeRequest(
-                                            getCurrentAccessToken(),
-                                            new GraphRequest.GraphJSONObjectCallback() {
-                                                @Override
-                                                public void onCompleted(JSONObject object, GraphResponse response) {
-                                                    // Application code
-                                                    try {
-                                                        String userId = mAuth.getCurrentUser().getUid();
-                                                        final String uid = object.getString("id");
-                                                        name = object.getString("name");
-                                                        gender = object.getString("gender");
-                                                        location = "";//object.getJSONObject("location").getString("name");;
-                                                        email = object.getString("email");
-
-                                                        mDatabase.child("users").child(userId).child("fbId").setValue(uid);
-                                                    } catch (JSONException e) {
-                                                        e.printStackTrace();
-                                                    }
-                                                }
-                                            });
-                                    Bundle parameters = new Bundle();
-                                    parameters.putString("fields", "id,name,email,gender,birthday");
-                                    request.setParameters(parameters);
-                                    request.executeAsync();
-
-                                }else{
-                                    //GOOGLE LOGIN
-                                    GoogleAuthProvider.getCredential(acct, null);
-                                    name= acct.getDisplayName();
-                                    email = acct.getEmail();
-                                    mDatabase.child("users").child(userId).child("googleURI").setValue(acct.getPhotoUrl());
-                                }*/
 
                                 String name="";
                                 String email="";

@@ -218,7 +218,7 @@ public class PlanDriverTrip extends FragmentActivity{
                         mDatabase.child("trips").child(tripId).child("driver").child("returnDate").setValue(endDate.getText().toString());
                         mDatabase.child("trips").child(tripId).child("driver").child("returnTime").setValue(endTime.getText().toString());
                     }
-                    mDatabase.child("trips").child(tripId).child("driver").child("availableSeats").setValue("" +seatNumber.getValue());
+                    mDatabase.child("trips").child(tripId).child("driver").child("availableSeats").setValue(""+seatNumber.getValue());
                     mDatabase.child("trips").child(tripId).child("driver").child("detour").setValue(detour.getSelectedItem().toString());
 
                     Toast.makeText(PlanDriverTrip.this, "Creating Trip...", Toast.LENGTH_SHORT).show();

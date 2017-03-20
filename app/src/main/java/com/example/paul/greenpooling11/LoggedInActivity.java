@@ -28,6 +28,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.batch.android.Batch;
+import com.batch.android.Config;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -67,6 +69,14 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
+
+        Batch.Push.setGCMSenderId("90493115152");
+
+        Batch.setConfig(new Config("DEV58C6BE5C493FBD234B637B5182B"));
+
+        Batch.User.editor()
+                .setIdentifier(mAuth.getCurrentUser().getUid())
+                .save();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setupToolbar();
@@ -278,6 +288,37 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
                 return;
             }
         }
+    }
+
+    @Override
+    protected void onStart()
+    {
+        super.onStart();
+        Batch.onStart(this);
+    }
+
+    @Override
+    protected void onStop()
+    {
+        Batch.onStop(this);
+
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy()
+    {
+        Batch.onDestroy(this);
+
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent)
+    {
+        Batch.onNewIntent(this, intent);
+
+        super.onNewIntent(intent);
     }
 
 }
