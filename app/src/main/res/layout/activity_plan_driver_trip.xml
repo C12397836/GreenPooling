@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_plan_driver_trip"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -167,13 +168,6 @@
                 android:layout_below="@+id/detourText"
                 />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tripSubmit"
-                android:text="Submit"
-                android:layout_below="@+id/seperator6"/>
-
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -185,5 +179,20 @@
 
         </RelativeLayout>
     </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/tripSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@mipmap/ic_done_all_black_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="31dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="12dp" />
 
 </RelativeLayout>

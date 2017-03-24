@@ -1,10 +1,13 @@
 package com.example.paul.greenpooling11;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
@@ -75,11 +78,13 @@ public class SplashScreen extends AppCompatActivity implements GoogleApiClient.O
 
     private TextView info;
     private CallbackManager callbackManager;
-    ProfilePictureView userImage;
 
-    private FirebaseAuth mAuth;
+    public FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     GoogleApiClient mGoogleApiClient;
+    ProgressDialog pg;
+    Boolean requestPage=false;
+    String tripId, passengerId;
 
     private static final int RC_SIGN_IN = 9001;
 
@@ -88,7 +93,27 @@ public class SplashScreen extends AppCompatActivity implements GoogleApiClient.O
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(this);
         setContentView(R.layout.splash_screen);
+
         mAuth = FirebaseAuth.getInstance();
+
+        pg= new ProgressDialog(SplashScreen.this);
+
+        if(getIntent().getExtras() != null && getIntent().getExtras().getString("tripId") != null) {
+            Log.d("jjjjj", "Extras and tripid");
+            tripId = getIntent().getExtras().getString("tripId");
+            passengerId = getIntent().getExtras().getString("passengerId");
+            requestPage = true;
+            LoginManager.getInstance().logOut();
+            mAuth.signOut();
+        }
+
+
+        if(mAuth.getCurrentUser() != null){
+            pg.setMessage("Signing in ...");
+            pg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            pg.setMax(100);
+            pg.show();
+        }
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -115,6 +140,11 @@ public class SplashScreen extends AppCompatActivity implements GoogleApiClient.O
                 public void onSuccess(LoginResult loginResult) {
                     Log.d("TAG", "facebook:onSuccess:" + loginResult);
                     handleFacebookAccessToken(loginResult.getAccessToken());
+                    pg.setMessage("Signin with Facebook ...");
+                    pg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    pg.setMax(100);
+                    pg.setCancelable(false);
+                    pg.show();
                 }
 
                 @Override
@@ -132,70 +162,19 @@ public class SplashScreen extends AppCompatActivity implements GoogleApiClient.O
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull final FirebaseAuth firebaseAuth) {
+                pg.setProgress(30);
+
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Log.d("TAG", "onAuthStateChanged:signed_in:" + user.getUid());
-
-                    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-                    mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            String userId = mAuth.getCurrentUser().getUid();
-
-                            String imageUri = user.getPhotoUrl().toString();
-                            mDatabase.child("users").child(userId).child("userImage").setValue(imageUri);
-
-                            Intent intent = new Intent(SplashScreen.this, RegistrationIntentService.class);
-                            startService(intent);
-
-                            if(dataSnapshot.child("users").hasChild(userId)) {
-                                //normal login
-                                Intent i = new Intent(SplashScreen.this, LoggedInActivity.class);
-                                startActivity(i);
-                            }else{
-                                //first time login
-
-                                String name="";
-                                String email="";
-
-                                name = user.getDisplayName();
-                                email = user.getEmail();
-
-                                Intent i = new Intent(SplashScreen.this, EditProfile.class);
-
-                                mDatabase.child("users").child(userId).child("name").setValue(name);
-                                mDatabase.child("users").child(userId).child("age").setValue("");
-                                mDatabase.child("users").child(userId).child("gender").setValue("");
-                                mDatabase.child("users").child(userId).child("location").setValue("");
-                                mDatabase.child("users").child(userId).child("email").setValue(email);
-                                mDatabase.child("users").child(userId).child("bio").setValue("");
-                                mDatabase.child("users").child(userId).child("preferences").child("chatty").setValue("");
-                                mDatabase.child("users").child(userId).child("preferences").child("smoking").setValue("");
-                                mDatabase.child("users").child(userId).child("car").child("make").setValue("");
-                                mDatabase.child("users").child(userId).child("car").child("model").setValue("");
-                                mDatabase.child("users").child(userId).child("car").child("seats").setValue("");
-                                mDatabase.child("users").child(userId).child("rtiLocation").child("lat").setValue("0");
-                                mDatabase.child("users").child(userId).child("rtiLocation").child("lng").setValue("0");
-
-                                startActivity(i);
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                    pg.setProgress(40);
+                    new LogInUserTask().execute();
 
                 } else {
                     // User is signed out
                     LoginManager.getInstance().logOut();
                     Log.d("TAG", "onAuthStateChanged:signed_out");
                 }
-                // ...
             }
         };
     }
@@ -209,7 +188,12 @@ public class SplashScreen extends AppCompatActivity implements GoogleApiClient.O
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             if (result.isSuccess()) {
                 // Google Sign In was successful, authenticate with Firebase
-                Log.d("jjjj", "HERE");
+
+                pg.setMessage("Signin with Google ...");
+                pg.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                pg.setMax(100);
+                pg.setCancelable(false);
+                pg.show();
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
@@ -297,5 +281,105 @@ public class SplashScreen extends AppCompatActivity implements GoogleApiClient.O
     private void signIn() {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, RC_SIGN_IN);
+    }
+
+    private class LogInUserTask extends AsyncTask<String, Integer, String>{
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pg.setProgress(45);
+        }
+
+        @Override
+        protected String doInBackground(String[] params) {
+
+            FirebaseUser user = mAuth.getCurrentUser();
+
+            pg.setProgress(50);
+
+            Log.d("jjjj", "onAuthStateChanged:signed_in:" + user.getUid());
+
+            final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    pg.setProgress(60);
+
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                    String userId = mAuth.getCurrentUser().getUid();
+
+                    String imageUri = user.getPhotoUrl().toString();
+                    mDatabase.child("users").child(userId).child("userImage").setValue(imageUri);
+
+                    Intent intent = new Intent(SplashScreen.this, RegistrationIntentService.class);
+                    startService(intent);
+
+                    pg.setProgress(70);
+
+                    if(dataSnapshot.child("users").hasChild(userId)) {
+                        //normal login
+                        Intent i;
+                        if(requestPage){
+                            Log.d("jjj", "TripRequest....");
+                            i = new Intent(SplashScreen.this, TripRequestPage.class);
+                            i.putExtra("tripId",tripId);
+                            i.putExtra("passengerId",passengerId);
+                        }else {
+                            i = new Intent(SplashScreen.this, LoggedInActivity.class);
+                        }
+                        pg.setProgress(100);
+                        pg.dismiss();
+                        startActivity(i);
+                    }else{
+                        //first time login
+
+                        String name="";
+                        String email="";
+
+                        pg.setProgress(75);
+
+                        name = user.getDisplayName();
+                        email = user.getEmail();
+
+                        Intent i = new Intent(SplashScreen.this, EditProfile.class);
+
+                        pg.setProgress(80);
+
+                        mDatabase.child("users").child(userId).child("name").setValue(name);
+                        mDatabase.child("users").child(userId).child("age").setValue("");
+                        mDatabase.child("users").child(userId).child("gender").setValue("");
+                        mDatabase.child("users").child(userId).child("location").setValue("");
+                        mDatabase.child("users").child(userId).child("email").setValue(email);
+                        mDatabase.child("users").child(userId).child("bio").setValue("");
+                        mDatabase.child("users").child(userId).child("preferences").child("chatty").setValue("");
+                        mDatabase.child("users").child(userId).child("preferences").child("smoking").setValue("");
+
+                        pg.setProgress(90);
+
+                        mDatabase.child("users").child(userId).child("car").child("make").setValue("");
+                        mDatabase.child("users").child(userId).child("car").child("model").setValue("");
+                        mDatabase.child("users").child(userId).child("car").child("seats").setValue("");
+                        mDatabase.child("users").child(userId).child("rtiLocation").child("lat").setValue("0");
+                        mDatabase.child("users").child(userId).child("rtiLocation").child("lng").setValue("0");
+
+                        pg.setProgress(100);
+                        pg.dismiss();
+                        startActivity(i);
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+        }
     }
 }

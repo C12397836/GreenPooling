@@ -1,47 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <TextView
-        android:id="@+id/label"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="50dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="45dp"
-        android:text="Plan Trip"
-        android:textStyle="bold"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/seperator"
-        android:layout_below="@+id/label"
-        />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/driverButton"
-        android:text="Driver"
-        android:layout_below="@id/seperator"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/seperator1"
-        android:layout_below="@+id/driverButton"
-        />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/passengerButton"
-        android:text="Passenger"
-        android:layout_below="@id/seperator1"/>
-
+    android:layout_height="match_parent">
 </RelativeLayout>

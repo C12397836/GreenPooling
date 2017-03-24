@@ -7,4 +7,140 @@
     android:layout_height="match_parent"
     tools:context="com.example.paul.greenpooling11.TripRequestPage">
 
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true" >
+
+        <RelativeLayout
+            android:id="@+id/container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <com.google.android.gms.maps.MapView
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:id="@+id/mapView"
+                />
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/routeInfoCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp"
+                app:cardUseCompatPadding="true"
+                android:layout_below="@+id/mapView">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/route"
+                        android:id="@+id/routePic"
+                        android:layout_centerInParent="true"/>
+
+                    <TextView
+                        android:id="@+id/origin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dublin"
+                        android:layout_toLeftOf="@+id/routePic"
+                        android:layout_centerVertical="true"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:id="@+id/leaving"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Leaving: 25/2/16 - 13:05"
+                        android:layout_below="@+id/routePic"
+                        android:layout_toLeftOf="@+id/routePic"/>
+
+                    <TextView
+                        android:id="@+id/destination"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Belfast"
+                        android:layout_toRightOf="@+id/routePic"
+                        android:layout_centerVertical="true"
+                        android:textSize="25sp"/>
+
+                    <TextView
+                        android:id="@+id/returning"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Return: \n 25/2/16 - 13:05"
+                        android:layout_below="@+id/routePic"
+                        android:layout_toRightOf="@+id/routePic"/>
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/passengerTripCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="true"
+                app:cardCornerRadius="5dp"
+                app:cardElevation="10dp"
+                app:cardUseCompatPadding="true"
+                android:layout_below="@+id/routeInfoCard">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/passengerTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Passenger Request"
+                        android:textSize="25sp"
+                        />
+
+                    <ImageView
+                        android:id="@+id/userImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:padding="15dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_below="@+id/passengerTitle"/>
+
+                    <TextView
+                        android:id="@+id/passengerName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Paul Good"
+                        android:layout_below="@+id/userImage"
+                        />
+
+                </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/submit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        app:fabSize="normal"
+        app:backgroundTint="@color/colorAccent"
+        app:srcCompat="@mipmap/ic_done_all_black_24dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="31dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="12dp" />
+
 </RelativeLayout>

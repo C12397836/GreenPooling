@@ -101,9 +101,10 @@ public class RouteMatch extends FragmentActivity implements OnMapReadyCallback{
                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                mDatabase.child("trips").child(tripId).child("passenger").child("userId").setValue(mAuth.getCurrentUser().getUid().toString());
-                                mDatabase.child("trips").child(tripId).child("passenger").child("pickupLocation").setValue(closestPoint.toString());
+                                //mDatabase.child("trips").child(tripId).child("passenger").child("userId").setValue(mAuth.getCurrentUser().getUid().toString());
+                                mDatabase.child("trips").child(tripId).child("passenger").child(mAuth.getCurrentUser().getUid()).child("pickupLocation").setValue(closestPoint.toString());
                                 mDatabase.child("trips").child(tripId).child("driver").child("availableSeats").setValue(""+(availableSeats-1));
+                                mDatabase.child("trips").child(tripId).child("passenger").child(mAuth.getCurrentUser().getUid()).child("confirmed").setValue(false);
 
                                 Toast.makeText(RouteMatch.this, "Lift Request Sent!", Toast.LENGTH_SHORT).show();
 

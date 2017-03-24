@@ -33,7 +33,7 @@ public class PlaceAPI {
         try {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + API_KEY);
-            sb.append("&types=(regions)");
+            sb.append("&types=address");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
             Log.e("", sb.toString());

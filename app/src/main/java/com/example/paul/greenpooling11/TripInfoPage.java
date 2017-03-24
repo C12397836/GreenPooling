@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -19,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
-public class TripInfoPage extends Activity {
+public class TripInfoPage extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private DatabaseReference mDatabase;
@@ -44,7 +46,7 @@ public class TripInfoPage extends Activity {
         final TextView availableSeats = (TextView) findViewById(R.id.availableSeats);
         final TextView detour = (TextView) findViewById(R.id.detour);
         final TextView returing = (TextView) findViewById(R.id.returning);
-        final Button submit = (Button) findViewById(R.id.submit);
+        final FloatingActionButton submit = (FloatingActionButton) findViewById(R.id.submit);
 
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -61,7 +63,7 @@ public class TripInfoPage extends Activity {
 
                 String date = dataSnapshot.child("trips").child(tripId).child("driver").child("date").getValue().toString();
                 String time = dataSnapshot.child("trips").child(tripId).child("driver").child("time").getValue().toString();
-                leaving.setText(date + " - "+ time);
+                leaving.setText("Leaving: \n"+date + " - "+ time);
 
                 origin.setText(dataSnapshot.child("trips").child(tripId).child("driver").child("origin").getValue().toString());
                 destination.setText(dataSnapshot.child("trips").child(tripId).child("driver").child("destination").getValue().toString());
@@ -73,7 +75,7 @@ public class TripInfoPage extends Activity {
                 }else{
                     String returnDate = dataSnapshot.child("trips").child(tripId).child("driver").child("returnDate").getValue().toString();
                     String returnTime = dataSnapshot.child("trips").child(tripId).child("driver").child("returnTime").getValue().toString();
-                    returing.setText(returnDate + " - "+ returnTime);
+                    returing.setText("Returning: \n"+returnDate + " - "+ returnTime);
                 }
             }
 

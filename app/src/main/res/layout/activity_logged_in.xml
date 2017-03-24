@@ -31,19 +31,84 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:id="@+id/loggedInLayout"
+                android:visibility="invisible">
 
-                <TextView
-                    android:id="@+id/welcome"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="100dp"
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:weightSum="2"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="50dp"
+                            android:gravity="center"
+                            android:textSize="45dp"
+                            android:text="Share A Trip!"
+                            android:textStyle="bold"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp" />
+
+                        <ImageView
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center"
+                            android:src="@mipmap/ic_launcher"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+                        <Button
+                            android:layout_width="@dimen/mr_dialog_fixed_width_major"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/driverButton"
+                            android:backgroundTint="@color/colorAccent"
+                            android:layout_gravity="center"
+                            android:textColor="#FFFFFF"
+                            android:text="Driver"
+                            android:padding="20dp"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp" />
+
+                        <Button
+                            android:layout_width="@dimen/mr_dialog_fixed_width_major"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/passengerButton"
+                            android:backgroundTint="@color/colorAccent"
+                            android:layout_gravity="center"
+                            android:textColor="#FFFFFF"
+                            android:text="Passenger"
+                            android:padding="20dp"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_horizontal"
-                    android:visibility="invisible"
-                    android:textSize="45dp"
-                    android:text="Welcome!"
-                    android:textStyle="bold"/>
+                    android:layout_centerInParent="true"
+                    android:orientation="vertical">
+
+
+                </LinearLayout>
 
             </RelativeLayout>
 

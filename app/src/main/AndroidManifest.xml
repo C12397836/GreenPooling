@@ -65,13 +65,15 @@
             android:theme="@style/AppTheme1" />
         <activity
             android:name=".PlanDriverTrip"
-            android:label="@string/title_activity_plan_driver_trip" />
+            android:label="@string/title_activity_plan_driver_trip"
+            android:theme="@style/AppTheme1"/>
         <activity
             android:name=".PlanPassengerTrip"
             android:label="@string/title_activity_plan_passenger_trip" />
         <activity
             android:name=".TripInfoPage"
-            android:label="TripInfoPage" />
+            android:label="TripInfoPage"
+            android:theme="@style/AppTheme1"/>
         <activity
             android:name=".RouteMatch"
             android:label="RouteMatch"
@@ -107,7 +109,7 @@
         <activity
             android:name=".TripRequestPage"
             android:label="@string/title_activity_trip_request_page"
-            android:screenOrientation="sensor"
+            android:theme="@style/AppTheme1"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="TRIPREQUESTPAGE" />

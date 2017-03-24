@@ -38,8 +38,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-            tripId= remoteMessage.getData().get(0);
-            passengerId= remoteMessage.getData().get(1);
+            tripId= ""+remoteMessage.getData().get("tripId");
+            passengerId= ""+remoteMessage.getData().get("passengerId");
+            Log.d("jjjjjj","TRIPID: "+tripId +"  PASSENGERID: "+passengerId);
         }
 
         if (remoteMessage.getNotification() != null) {
@@ -51,8 +52,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, TripRequestPage.class);
+        intent.putExtra("tripId",tripId);
+        intent.putExtra("passengerId",passengerId);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

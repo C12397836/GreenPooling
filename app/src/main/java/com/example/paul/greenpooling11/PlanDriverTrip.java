@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
 import android.app.Fragment;
 import android.os.Bundle;
@@ -118,7 +119,7 @@ public class PlanDriverTrip extends FragmentActivity{
         final NumberPicker seatNumber = (NumberPicker) findViewById(R.id.seatNumber);
 
         final Spinner detour = (Spinner) findViewById(R.id.detour);
-        Button submit = (Button) findViewById(R.id.tripSubmit);
+        FloatingActionButton submit = (FloatingActionButton) findViewById(R.id.tripSubmit);
 
         startDate = (Button) findViewById(R.id.startDate);
         startTime = (Button) findViewById(R.id.startTime);

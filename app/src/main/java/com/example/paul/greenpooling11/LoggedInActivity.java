@@ -1,10 +1,9 @@
 package com.example.paul.greenpooling11;
 
-import android.app.ActionBar;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Build;
+import android.location.LocationManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.annotation.Nullable;
@@ -16,33 +15,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.batch.android.Batch;
-import com.batch.android.Config;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 
-public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiClient.ConnectionCallbacks,
-        GoogleApiClient.OnConnectionFailedListener, LocationListener*/ {
+public class LoggedInActivity extends AppCompatActivity{
 
     private String[] mNavigationDrawerItemTitles;
     private ListView mDrawerList;
@@ -51,39 +39,21 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
     android.support.v7.app.ActionBarDrawerToggle mDrawerToggle;
-
-    TextView welcome;
-
-
-    private static final String TAG = LoggedInActivity.class.getSimpleName();
-    private GoogleApiClient mGoogleApiClient;
-
-    private LocationRequest mLocationRequest;
-    protected Location mCurrentLocation;
+    RelativeLayout loggedInActivityLayout;
 
     final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_logged_in);
 
-        Batch.Push.setGCMSenderId("90493115152");
-
-        Batch.setConfig(new Config("DEV58C6BE5C493FBD234B637B5182B"));
-
-        Batch.User.editor()
-                .setIdentifier(mAuth.getCurrentUser().getUid())
-                .save();
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setupToolbar();
         setSupportActionBar(toolbar);
 
-        welcome = (TextView) findViewById(R.id.welcome);
-        welcome.setVisibility(View.VISIBLE);
+        loggedInActivityLayout = (RelativeLayout) findViewById(R.id.loggedInLayout);
+        loggedInActivityLayout.setVisibility(View.VISIBLE);
 
         mTitle = mDrawerTitle = getTitle();
         mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
@@ -92,11 +62,11 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
 
         DataModel[] drawerItem = new DataModel[5];
 
-        drawerItem[0] = new DataModel(R.drawable.profile, "Profile");
-        drawerItem[1] = new DataModel(R.drawable.rti, "RTI");
-        drawerItem[2] = new DataModel(R.drawable.plan_trip, "Plan Trip");
-        drawerItem[3] = new DataModel(R.drawable.friends_regular_trips, "Friends Regular Trips");
-        drawerItem[4] = new DataModel(R.drawable.search_all_trips, "Search All Trips");
+        drawerItem[0] = new DataModel(R.mipmap.profile, "Profile");
+        drawerItem[1] = new DataModel(R.mipmap.rti, "RTI");
+        drawerItem[2] = new DataModel(R.mipmap.plan_trip, "Plan Trip");
+        drawerItem[3] = new DataModel(R.mipmap.friends_regular_trips, "Friends Regular Trips");
+        drawerItem[4] = new DataModel(R.mipmap.ic_play_arrow_black_24dp, "Start Trip");
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -107,8 +77,26 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
         mDrawerLayout.addDrawerListener(mDrawerToggle);
         setupDrawerToggle();
 
-        //buildGoogleApiClient();
         checkLocationPermission();
+
+        Button driverButton = (Button) findViewById(R.id.driverButton);
+        Button passengerButton = (Button) findViewById(R.id.passengerButton);
+
+        driverButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoggedInActivity.this, PlanDriverTrip.class);
+                startActivity(i);
+            }
+        });
+
+        passengerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(LoggedInActivity.this, PlanPassengerTrip.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Nullable
@@ -128,8 +116,7 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
     private void selectItem(int position) {
 
         Fragment fragment = null;
-
-        welcome.setVisibility(View.INVISIBLE);
+        loggedInActivityLayout.setVisibility(View.INVISIBLE);
         switch (position) {
             case 0:
                 fragment = new ProfileFragment();
@@ -144,7 +131,7 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
                 fragment = new FriendsRegularTripsFragment();
                 break;
             case 4:
-                fragment = new SearchAllTripsFragment();
+                fragment = new StartTripFragment();
                 break;
             default:
                 break;
@@ -177,11 +164,20 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked){
+                    checkLocationPermission();
+                    
+                    LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    if(!lm.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                    }
+
                     startService(new Intent(LoggedInActivity.this, LocationUpdatesService.class));
+
                     Toast.makeText(LoggedInActivity.this, "Starting RTI...", Toast.LENGTH_SHORT).show();
 
                 }else{
                     stopService(new Intent(LoggedInActivity.this, LocationUpdatesService.class));
+
                     Toast.makeText(LoggedInActivity.this, "Stopping RTI...", Toast.LENGTH_SHORT).show();
                 }
 
@@ -232,22 +228,14 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Asking user if explanation is needed
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-
-                //Prompt the user once explanation has been shown
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
 
 
             } else {
-                // No explanation needed, we can request the permission.
                 ActivityCompat.requestPermissions(this,
                         new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
@@ -263,27 +251,14 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted. Do the
-                    // contacts-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this,
                             android.Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
-
-                        if (mGoogleApiClient == null) {
-                            /*LocationServices.FusedLocationApi.requestLocationUpdates(
-                                    mGoogleApiClient, mLocationRequest, this);*/
-                            //startService(new Intent(this, LocationUpdatesService.class));
-                        }
                     }
-
                 } else {
-
-                    // Permission denied, Disable the functionality that depends on this permission.
-                    Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Permission Denied", Toast.LENGTH_LONG).show();
                 }
                 return;
             }
@@ -293,32 +268,22 @@ public class LoggedInActivity extends AppCompatActivity /*implements GoogleApiCl
     @Override
     protected void onStart()
     {
+        loggedInActivityLayout.setVisibility(View.VISIBLE);
         super.onStart();
-        Batch.onStart(this);
     }
 
     @Override
     protected void onStop()
     {
-        Batch.onStop(this);
-
+        loggedInActivityLayout.setVisibility(View.INVISIBLE);
         super.onStop();
     }
 
     @Override
     protected void onDestroy()
     {
-        Batch.onDestroy(this);
-
+        loggedInActivityLayout.setVisibility(View.INVISIBLE);
         super.onDestroy();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent)
-    {
-        Batch.onNewIntent(this, intent);
-
-        super.onNewIntent(intent);
     }
 
 }
